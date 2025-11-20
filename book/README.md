@@ -13,7 +13,6 @@ header-includes:
   - \definecolor{lightgray}{gray}{0.95}
 ---
 
-
 # The Art of Pivoting - Techniques for Intelligence Analysts to Discover New Relationships in a Complex World
 
 This book explores how intelligence and cyber-security analysts can uncover hidden links between threat actor infrastructure and ongoing investigations by pivoting on both classic and unconventional indicators — many of which are often overlooked. The material is grounded in empirical, field-tested strategies used in cyber-security, digital forensics, cyber threat intelligence, and intelligence analysis more broadly.
@@ -34,7 +33,7 @@ This section therefore acts as a lightweight theory chapter — just enough stru
 
 In this book, we use the term **data points** to describe any discrete element that can support correlation or pivoting during threat intelligence analysis. A data point may be a traditional indicator such as an IP address, domain, or file hash, observables at large but it can also include less conventional digital artifacts like cookie names, QR codes, favicon hashes, HTTP header sequences (HHHash), DOM structure, or Marketing Analytics tracking codes. Treating all of these elements uniformly as data points is useful because it avoids assuming that only strong or traditional indicators are relevant. Even weak or unexpected data points can become valuable when combined through composite correlation. In practice, pivoting is the act of moving from one data point to another through inferred or observed relationships, while correlation is the process of identifying those relationships. 
 
-This terminology provides a neutral and flexible way to reason about diverse signals extracted from AIL and MISP during infrastructure and threat actor analysis.
+This terminology provides a neutral and flexible way to reason about diverse signals extracted from tooling (such as AIL and MISP) during infrastructure and threat actor analysis.
 
 ### Correlation
 
@@ -103,7 +102,7 @@ Exact match correlation is therefore an essential first step: fast, deterministi
 
 ### Fuzzy Matching Correlation
 
-Once exact matching has exhausted its value, analysts often turn to **fuzzy matching correlation**. Instead of requiring two data points to be identical, fuzzy matching looks for *similarity*. Tools such as **SSDEEP**, **TLSH**, or **sdhash** generate similarity hashes that allow analysts to connect files or payloads that share overlapping content, embedded resources, compiler artifacts, or packer stubs.
+Once exact matching has exhausted its value, analysts often turn to **fuzzy matching correlation**. Instead of requiring two data points to be identical, fuzzy matching looks for *similarity*. Tools such as **SSDEEP**, **TLSH**, or **sdhash**[^sdhash] generate similarity hashes that allow analysts to connect files or payloads that share overlapping content, embedded resources, compiler artifacts, or packer stubs.
 
 Fuzzy correlation is especially useful when adversaries produce many variants of the same malware family, or when a phishing kit is redeployed with small modifications. Two PE files that differ in signatures, strings, or timestamp can still score highly in TLSH or SSDEEP, revealing a relationship that exact match correlation would miss.
 
@@ -121,28 +120,26 @@ Fuzzy and group-based correlations therefore extend the pivoting process beyond 
 
 ### Analytical Strategies of Pivoting
 
-
 ```mermaid
 flowchart TD
-    A[Initial IOC or Artifact] --> B[Current Pivoting]
+    subgraph "Analytical Strategies of Pivoting"
+    
+    A((Data Points such as selector, attribute or IoC)) --> B[Current Pivoting]
     A --> C[Historical Pivoting]
     A --> D[Predictive Pivoting]
 
-    B --> B1[Live infrastructure mapping]
-    B --> B2[Communication behavior]
-    B --> B3[Operational patterns]
+    B --> B1(Live Infrastructure Mapping such as DNS queries, active scanning)
+    B --> B2(Communication Behavior such as querying services, active monitoring)
+    B --> B3(Operational Patterns such as key materials, similar malicious files)
 
-    C --> C1[Past infrastructure reuse]
-    C --> C2[WHOIS / SSL cert history]
-    C --> C3[Leaked credentials and aliases]
+    C --> C1(Past Infrastructure Reuse such as similar network infrastructure, default setup)
+    C --> C2(Historical Public Records such as WHOIS records, TLS key materials or parameters)
+    C --> C3(Historical Records such as leaked credentials, identifier or aliase reuse)
 
-    D --> D1[Recurring TTPs]
-    D --> D2[Graph-based prediction]
-    D --> D3[Tool & kit reuse forecasting]
-
-    style A fill:#fdf6e3,stroke:#657b83
-    style B,C,D fill:#eee8d5,stroke:#93a1a1
-    style B1,B2,B3,C1,C2,C3,D1,D2,D3 fill:#ffffff,stroke:#93a1a1
+    D --> D1(Recurring TTPs such as a similar pattern or techniques)
+    D --> D2(Predictive Patterns such as domain generation algorithms, common patterns reused) 
+    D --> D3(Forecasting Tool, Techniques or Practice)
+    end
 ```
 
 Pivoting can also be thought of across different points in time: **current**, **historical**, and **predictive**.
@@ -165,11 +162,11 @@ This illustrates a core principle of modern pivoting: even minor or disconnected
 
 ### The Danger of Single-Model Reasoning
 
-Models like the Pyramid of Pain are valuable for teaching, but they can become restrictive if treated as absolute truth. The assumption that “high-value indicators are hard to change” encourages analysts to prioritize certificates, cryptographic hashes, or infrastructure identifiers, while disregarding weaker signals. In reality, modern adversaries routinely automate or outsource the rotation of high-value indicators: cloud instances are redeployed in seconds, TLS certificates are regenerated for free, and containerized command-and-control servers can be destroyed and rebuilt faster than defenders can react.
+Models like the Pyramid of Pain are valuable for teaching, but they can become restrictive if treated as absolute truth. The assumption that “high-value indicators are hard to change” encourages analysts to prioritize TTPs, certificates, cryptographic hashes, or infrastructure identifiers, while disregarding weaker signals. In reality, modern adversaries routinely automate or outsource the rotation of high-value indicators: cloud instances are redeployed in seconds, TLS certificates are regenerated for free, and containerized command-and-control servers can be destroyed and rebuilt faster than defenders can react.
 
 At the same time, low-entropy or unconventional indicators often become the most revealing. Reused cookie names, favicons, Google Analytics identifiers, forum nicknames, vanity onion prefixes, or repeated API paths are frequently left untouched. These elements do not appear at the top of any model, yet they provide persistent and highly effective pivot points—because attackers do not consider them “indicators” worth hiding.
 
-In short, strict adherence to a single model introduces blind spots. The real world rewards flexible analysis, composite correlation, and attention to the traces adversaries ignore.
+In short, **strict adherence to a single model introduces blind spots**. The real world rewards flexible analysis, composite correlation, and attention to the traces adversaries ignore or disregard.
 
 ### Re-evaluating Our Indicator Collection and Pivoting Practices
 
@@ -179,7 +176,7 @@ This required a deliberate change in mindset. Rather than treating established i
 
 This shift also changed how analysts think: instead of asking which indicators matter most, we now ask which indicators adversaries fail to hide. This perspective becomes essential as we move into composite correlation and clustering techniques, where weak signals converge into strong intelligence.
 
-### Looking at “Broken” Indicators — and Still Using Them
+### Looking at “Broken” Indicators and Still Using Them
 
 Some indicators are known to be imperfect, yet remain surprisingly effective in real investigations. MurmurHash3, for example, is still widely used for favicon correlation. A single MMH3 hash can quickly reveal Tor hidden services that are also exposed on the clear web, allowing analysts to pivot across seemingly unrelated infrastructure with minimal effort.
 
@@ -187,6 +184,13 @@ If MurmurHash3 is known to be flawed, why continue using it? Because even with w
 
 There is an additional twist: when threat actors deliberately attempt to manipulate or collide favicon hashes, those collisions themselves become useful signals. Correlating clusters of colliding favicons can reveal common tooling, shared deployment scripts, or copied infrastructure. In other words, a “broken” indicator can still produce strong intelligence, either because adversaries ignore it, or because their attempts to evade it create new patterns worth pivoting on. Stopping the calculation of such hashes would simply remove a cheap and surprisingly effective investigative tool.
 
+#### Combining Weak and Strong Data Points for Pivoting
+
+The continued use of seemingly weak data points, like MurmurHash3 (MMH3) for favicons or even simple MD5 file hashes, is justified when they are understood as correlation point rather than definitive attribution artifacts. The key is to integrate them strategically with strong data points within a structured pivoting workflow.
+
+Weak data points are often the initial starting point for an investigation (e.g., A single alone MD5 hash from a security alert). They excel at quickly casting a wide net to find clusters of potentially related infrastructure or activity. Their low interest in threat intelligence practice and tendency for adversaries to ignore them make them ideal for the initial discovery phase.
+
+> :brain: If you design a Threat Intelligence database or storage model, be sure to include a schema that accommodates a diverse array of data points, including those categorized as weak data points (e.g., MMH3, MD5, cookie names). A robust model must treat all data points as correlatable objects, ensuring that initial investigations can effectively use high-volume, low-cost signals for breadth pivoting before confirming connections with high-fidelity, strong data points.
 
 ## Origin of the Book
 
@@ -194,3 +198,4 @@ This book began life as a presentation at the [2025 FIRST Cyber Threat Intellige
 
 While the presentation’s narrative was time-limited, the ambition of this book is broader. It preserves the pragmatic, analyst-oriented tone of the original session yet adds depth, case studies, workflows, and open-source tooling (such as MISP and the AIL Project) to support repeatable investigation. Above all, it remains an open, living document—rooted in the same community-driven ethos that brought the Berlin event together.
 
+[^sdhash]: [https://github.com/sdhash/sdhash](https://github.com/sdhash/sdhash) [Evaluating Similariy Digests: A Study of TLSH, ssdeep, and sdhash Against Common File Modifications](https://dzone.com/articles/similarity-digests-tlsh-ssdeep-sdhash-benchmark) shows the diversity of similary digests/fuzzing hashing and the difficulty to find the perfect one even for a single task such as classifying malware binaries.
