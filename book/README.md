@@ -350,6 +350,75 @@ dom-hash exemplifies a broader category of uncommon data points: indicators that
 
 Used correctly, dom-hash enables analysts to pivot across infrastructure that would otherwise appear unrelated, reinforcing the central theme of this book: meaningful intelligence often emerges not from perfect indicators, but from simple signals applied creatively and in combination.
 
+### Favicons: Visual Artifacts as Infrastructure Fingerprints
+
+Favicons are small icons associated with websites, typically served as part of a site’s static assets. They are designed purely for user experience and branding, not for security or identification. Precisely because of this, favicons have become a surprisingly effective and durable data point for infrastructure correlation in threat intelligence.
+
+In many malicious ecosystems—phishing kits, scam portals, ransomware leak sites, underground marketplaces—favicons are copied verbatim across deployments. While operators frequently rotate domains, IP addresses, certificates, and even page content, favicons are often reused without modification, making them a reliable pivot point across otherwise fragmented infrastructure.
+
+#### Why Favicons Matter
+
+Favicons occupy a unique position among web artifacts:
+
+- They are rarely customized per deployment.
+- They are usually embedded early in development and forgotten.
+- They persist across clear-web and Tor or I2P deployments.
+- They are commonly reused across campaigns and time.
+
+Threat actors tend to focus their evasion efforts on elements they perceive as indicators—domains, IPs, certificates, or payloads—while treating favicons as benign design assets. This operational blind spot turns favicons into durable fingerprints.
+
+#### Favicon Hashing as a Correlation Primitive
+
+The most common way to operationalize favicons is by hashing their binary content and using that hash as a correlation key. In practice, non-cryptographic hashes such as MurmurHash3 (MMH3) are frequently used because they are fast, widely implemented, and sufficient for clustering purposes.
+
+While MMH3 is not collision-resistant and is unsuitable for security guarantees, this is largely irrelevant in the context of pivoting. The goal is not uniqueness, but **repeatability**: the same favicon reused across infrastructures will reliably produce the same hash.
+
+This makes favicon hashes particularly effective for:
+
+- Linking phishing sites derived from the same kit
+- Correlating Tor hidden services with clear-web infrastructure
+- Identifying cloned scam or fraud portals
+- Discovering reused administrative panels or staging servers
+
+#### Composite Correlation with Favicons
+
+Favicons are rarely used in isolation. Their true value emerges when combined with other data points:
+
+- A shared favicon hash and identical DOM structure
+- A favicon hash combined with similar HTTP headers
+- A reused favicon across domains sharing analytics identifiers
+- A favicon hash linking infrastructure across different hosting providers
+
+In composite correlation, favicons often act as the initial pivot that reveals a broader cluster, which can then be refined using stronger or more contextual indicators.
+
+#### Noise, Collisions, and Interpretation
+
+Like all uncommon data points, favicon correlation is not immune to noise.
+
+- Popular frameworks or widely used templates may share default favicons.
+- Collision-prone hashing algorithms can group unrelated icons.
+- High-cardinality favicon hashes may indicate generic assets rather than operator reuse.
+
+However, these limitations are manageable. High-volume correlations are themselves a signal that a favicon is likely generic and should be deprioritized. Conversely, low-volume or thematically consistent reuse significantly increases investigative value.
+
+Importantly, even deliberate attempts to evade favicon-based correlation—such as modifying or randomizing icons—can introduce new patterns worth tracking, especially when changes are inconsistent across deployments.
+
+#### Beyond Favicons: Related Visual and Static Assets
+
+Favicons illustrate a broader class of **static visual and resource-based data points** that are often overlooked:
+
+- Logos and embedded images
+- CSS files, layout assets and properties
+- JavaScript bundles reused across deployments
+- Icon fonts and UI components
+
+These artifacts share similar properties: they are operationally neglected, inexpensive to reuse, and rarely treated as indicators by adversaries. When extracted, hashed, and correlated, they provide additional pivot opportunities that complement favicons and DOM-based techniques.
+
+#### Positioning Favicons Among Uncommon Data Points
+
+Favicons are a textbook example of how low-entropy, non-obvious artifacts can outperform traditional indicators in real investigations. Their strength lies not in cryptographic assurance, but in adversarial oversight and operational reuse.
+
+When used as part of a broader pivoting strategy—combined with structural, temporal, and contextual data—favicons remain one of the most effective and accessible uncommon data points available to analysts. They reinforce a recurring lesson of pivot-based analysis: intelligence value often comes from what attackers ignore, not from what they try to protect.
 
 ## Validating Correlation: Signal or Noise?
 
