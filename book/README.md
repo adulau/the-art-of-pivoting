@@ -661,6 +661,80 @@ Cookie names exemplify a broader class of **application-layer structural indicat
 
 When used thoughtfully, cookie name correlation provides a low-effort, high-return pivot that complements other structural techniques such as DOM hashing and HTTP header fingerprinting. They reinforce a central lesson of pivot-based analysis: durable intelligence often resides not in high-entropy values, but in the quiet, persistent details that attackers rarely bother to change.
 
+### Filenames: Weak Indicators with Contextual Intelligence Value
+
+In threat intelligence, filenames are often dismissed as unreliable or noisy indicators. They are easy to change, frequently generic, and prone to false positives. In many technical contexts—such as malware delivery or file hosting—filenames alone rarely provide strong evidence of shared ownership or coordinated activity.
+
+However, dismissing filenames entirely overlooks an important reality: in certain environments, filenames carry **contextual and semantic meaning** that can reveal key aspects of a threat actor’s activity. When treated as contextual data points rather than definitive indicators, filenames can become valuable tools for pivoting and investigative enrichment.
+
+#### Why Filenames Are Usually Considered Weak
+
+Filenames are generally weak indicators because:
+
+- Common names (`invoice.pdf`, `update.exe`, `document.zip`) are reused widely
+- They are trivial to modify or randomize
+- Automated tooling often generates generic or meaningless names
+- High-cardinality reuse produces substantial analytical noise
+
+In isolation, filename correlation rarely supports attribution or infrastructure linkage. High-volume matches typically indicate coincidence rather than coordination.
+
+#### Where Filenames Become Interesting
+
+The investigative value of filenames increases significantly in **human-facing contexts**, where filenames are chosen deliberately rather than generated automatically. These include:
+
+- Social networks and messaging platforms
+- Data leak dumps and archive releases
+- Shared folders, paste sites, or cloud storage links
+- Screenshots, photos, or documents shared publicly
+
+In these environments, filenames may encode:
+
+- Language preferences or regional spelling
+- Operational themes or campaign narratives
+- Internal project names or tooling references
+- Timestamps, versioning schemes, or sequencing
+- Humor, aliases, or stylistic quirks unique to an actor
+
+Such details often persist across platforms and time, making filenames useful for correlation when combined with other signals.
+
+#### Filenames as Pivot and Enrichment Data Points
+
+Rather than serving as primary indicators, filenames are best used as **pivot aids and enrichment signals**. They can help analysts:
+
+- Group related documents within a leak
+- Identify recurring naming conventions across releases
+- Pivot between social media posts and leaked material
+- Correlate content shared by the same actor under different identities
+
+In practice, filenames often function as a *narrative glue*, connecting technical artifacts to human behavior and communication patterns.
+
+#### Composite Correlation with Filenames
+
+Filenames gain strength when used in composite correlation:
+
+- Similar filenames appearing alongside shared metadata
+- Filename patterns aligned with specific platforms or communities
+- Filenames reinforcing language or cultural indicators
+- Filenames recurring in conjunction with specific file formats or content types
+
+When combined with timestamps, platform context, or author identifiers, filenames can help reconstruct activity timelines or reveal operational consistency.
+
+#### Noise, Ambiguity, and Analyst Judgment
+
+Filenames are inherently ambiguous and must be interpreted cautiously.
+
+- Generic filenames should be deprioritized quickly
+- Automated renaming by platforms can obscure original intent
+- Translations or reuploads may alter filenames
+
+Analyst judgment is essential. The question is not whether a filename is unique, but whether it is **informative in context**. In many cases, the filename’s value lies not in correlation volume, but in the insight it provides into how and why content was shared.
+
+#### Positioning Filenames Among Uncommon Data Points
+
+Filenames occupy a unique position among uncommon data points: they sit at the intersection of technical artifacts and human expression. While weak from a purely technical standpoint, they can reveal intent, habits, and operational patterns that stronger indicators cannot.
+
+Used thoughtfully, filenames complement structural and behavioral indicators by adding semantic and contextual depth. They reinforce a key principle of pivot-based analysis: even fragile data points can yield meaningful intelligence when interpreted within the right context and combined with other signals.
+
 ## Validating Correlation: Signal or Noise?
 
 Not every correlation is equally useful. While correlation is essential for pivoting, it can also generate large volumes of relationships that are technically correct but analytically unhelpful. One of the core skills of an intelligence analyst is therefore the ability to assess whether a correlation represents a meaningful investigative lead or merely background noise.
