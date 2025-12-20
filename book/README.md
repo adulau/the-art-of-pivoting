@@ -25,7 +25,7 @@ This book explores how intelligence and cyber-security analysts can uncover hidd
 
 Our goal is to provide analysts with a practical toolkit of analytical methods, supported by real-world examples, to enhance investigative workflows without locking them into a single mindset, strict model, or overly rigid technical strategy. Instead, the book encourages creative exploration, data-driven reasoning, and the use of diverse data points — from traditional IOCs to subtle metadata traces — as part of a flexible and repeatable analytical process.
 
-The approach presented throughout this book is intentionally built upon open-source tooling, most notably the MISP threat intelligence platform and the AIL Project. By relying on transparent and widely adopted tools, every technique described here can be reproduced, validated, and reused by analysts, researchers, educators, or incident response teams. This ensures that the methodology is not theoretical or proprietary, but openly verifiable, community-driven, and designed to evolve. The book itself follows the same philosophy: it is an open, living document, publicly versioned, and contributions are [welcomed directly via Git](https://github.com/adulau/the-art-of-pivoting). Readers are encouraged to experiment, improve, and extend the content, making the entire workflow repeatable, auditable, and collaborative within the wider defensive security community.
+The approach presented throughout this book is intentionally built upon open-source tooling, most notably the [MISP threat intelligence platform](https://misp-project.org/) and the [AIL Project](https://ail-project.org/). By relying on transparent and widely adopted tools, every technique described here can be reproduced, validated, and reused by analysts, researchers, educators, or incident response teams. This ensures that the methodology is not theoretical or proprietary, but openly verifiable, community-driven, and designed to evolve. The book itself follows the same philosophy: it is an open, living document, publicly versioned[^versioned], and contributions are [welcomed directly via Git](https://github.com/adulau/the-art-of-pivoting). Readers are encouraged to experiment, improve, and extend the content, making the entire workflow repeatable, auditable, and collaborative within the wider defensive security community.
 
 ## Definition and the So-Claimed “Theory”
 
@@ -845,6 +845,8 @@ In AIL, [this capability](https://ail-project.org/blog/2025/09/29/v6.5.released/
 
 The resulting descriptions transform visual content into searchable and correlatable text, enabling analysts to pivot on keywords, objects, or inferred context rather than raw pixels.
 
+![A screenshot from the AIL framework illustrating vision-based analysis of an image, highlighting how extracted features and descriptions can be transformed into data points for indexing and correlation.](./img/vision.png)
+
 #### Pivoting with Image-Derived Data
 
 Image-derived data points enable pivoting scenarios that are otherwise difficult or impossible:
@@ -1131,7 +1133,8 @@ Finally, I would like to thank the broader Cyber Threat Intelligence community�
 
 You should have received a copy of the license along with this work. If not, see [https://creativecommons.org/licenses/by-sa/4.0/](https://creativecommons.org/licenses/by-sa/4.0/).
 
-[^warning-list]: [MISP Warning Lists](https://github.com/MISP/misp-warninglists) are used to inform MISP users—and tools relying on the same standards—about data points that may generate false positives or require additional contextual awareness during analysis. 
+[^versioned]: This book is versioned in a Git repository, and the date refers to the current version. As the book is a living document, it evolves through new contributions and updates whenever new insights, techniques, or noteworthy topics related to pivoting, data points, or correlation are discovered or refined.
+[^warning-list]: [MISP Warning Lists](https://github.com/MISP/misp-warninglists) are used to inform MISP users—and tools relying on the same standards—about data points that may generate false positives or require additional contextual awareness during analysis.
 [^misp-standard]: MISP published standards are described [https://www.misp-standard.org/standards/](https://www.misp-standard.org/standards/).
 [^sdhash]: [https://github.com/sdhash/sdhash](https://github.com/sdhash/sdhash) [Evaluating Similariy Digests: A Study of TLSH, ssdeep, and sdhash Against Common File Modifications](https://dzone.com/articles/similarity-digests-tlsh-ssdeep-sdhash-benchmark) shows the diversity of similary digests/fuzzing hashing and the difficulty to find the perfect one even for a single task such as classifying malware binaries.
 [^collision-md5]: [Fast Collision Attack on MD5](https://eprint.iacr.org/2006/104) presents an improved attack algorithm to find two-block collisions of the hash function MD5.
