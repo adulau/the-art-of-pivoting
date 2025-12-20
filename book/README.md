@@ -129,6 +129,8 @@ Automatic correlation can occur at different moments in the lifecycle of data:
 
 This continuous nature is important: correlation is not a one-time action. A data point that appeared insignificant at ingestion may become meaningful weeks or months later when additional context emerges.
 
+![A screenshot of the MISP automatic correlation feature, which allows analysts to quickly identify correlating data points.](./img/misp-correlation.png)
+
 Automatic correlation excels at scale and speed. It ensures consistency, repeatability, and broad coverage across large volumes of data. However, it operates strictly within the boundaries of what is encoded in rules and algorithms and can therefore generate false positives or noisy correlations, especially when weak or high-entropy data points are involved. This analytical noise can become a burden for analysts, requiring manual validation, contextual filtering, and prioritization to separate meaningful relationships from coincidental ones.
 
 
