@@ -2,6 +2,8 @@
 
 The Art of Pivoting - Techniques for Intelligence Analysts to Discover New Relationships in a Complex World
 
+- [PDF](https://raw.githubusercontent.com/adulau/the-art-of-pivoting/refs/heads/main/output/the-art-of-pivoting.pdf)
+
 ## Abstract
 
 This book explores how intelligence and cyber-security analysts can uncover hidden links between threat actor infrastructure and ongoing investigations by pivoting on both classic and unconventional indicators — many of which are often overlooked. The material is grounded in empirical, field-tested strategies used i
@@ -16,4 +18,6 @@ ucators, or incident response teams. This ensures that the methodology is not th
 ## Source
 
 - [Markdown - The Art of Pivoting - Techniques for Intelligence Analysts to Discover New Relationships in a Complex World](https://github.com/adulau/the-art-of-pivoting/tree/main/book)
-- [PDF - The Art of Pivoting - Techniques for Intelligence Analysts to Discover New Relationships in a Complex World](https://github.com/adulau/the-art-of-pivoting/blob/main/output/the-art-of-pivoting.pdf)
+- [PDF - The Art of Pivoting - Techniques for Intelligence Analysts to Discover New Relationships in a Complex World](https://raw.githubusercontent.com/adulau/the-art-of-pivoting/refs/heads/main/output/the-art-of-pivoting.pdf)
+
+
