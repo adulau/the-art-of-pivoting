@@ -301,7 +301,7 @@ There is an additional twist: when threat actors deliberately attempt to manipul
 
 The continued use of seemingly weak data points, like MurmurHash3 (MMH3) for favicons or even simple MD5[^collision-md5] file hashes, is justified when they are understood as correlation point rather than definitive attribution artifacts. The key is to integrate them strategically with strong data points within a structured pivoting workflow.
 
-![Illustration of mixed pivoting that combines strong correlations, such as SSH key fingerprints linking clear-web and Tor addresses, with weaker data points like favicon reuse. The view is taken from the AIL framework.](./img/ail-ssh-deanonimized.png)
+![Illustration of mixed pivoting that combines strong correlations, such as SSH key fingerprints linking clear-web and Tor addresses, with weaker data points like Telegram channel name or favicon reuse. The view is taken from the AIL framework.](./img/ail-ssh-deanonimized.png)
 
 Weak data points are often the initial starting point for an investigation (e.g., A single alone MD5 hash from a security alert). They excel at quickly casting a wide net to find clusters of potentially related infrastructure or activity. Their low interest in threat intelligence practice and tendency for adversaries to ignore them make them ideal for the initial discovery phase.
 
@@ -772,6 +772,8 @@ In these environments, filenames may encode:
 
 Such details often persist across platforms and time, making filenames useful for correlation when combined with other signals.
 
+![An AIL framework screenshot showing the reuse of an explicit filename across different social networks. The identification of the associated criminal activity is left as an exercise for the reader.](./img/filename.png)
+
 #### Filenames as Pivot and Enrichment Data Points
 
 Rather than serving as primary indicators, filenames are best used as **pivot aids and enrichment signals**. They can help analysts:
@@ -953,6 +955,8 @@ Not every correlation is equally useful. While correlation is essential for pivo
 
 Validation is not about disproving correlation, but about evaluating its **investigative value**. A correlation can be valid from a data perspective and still be irrelevant, misleading, or too generic to support further analysis. This section explores common correlation patterns that frequently produce noise, along with counter-examples where the same correlations become highly valuable.
 
+![A screenshot from the MISP correlation engine configuration showing how analysts can exclude globally correlating values that generate noise during automatic correlation.](./img/decorrelation.png)
+
 ### Correlation Cardinality as a First Heuristic
 
 A simple but powerful heuristic is **cardinality**: how many other data points are linked through the same correlation.
@@ -961,6 +965,70 @@ A simple but powerful heuristic is **cardinality**: how many other data points a
 - **High cardinality** correlations may indicate shared infrastructure, generic services, or artifacts that are not actor-controlled.
 
 Cardinality alone is not sufficient to accept or reject a correlation, but it provides an immediate signal for prioritization and deeper validation.
+
+#### Pivoting on High-Cardinality Values and Outliers
+
+High correlation cardinality is often interpreted as a signal of low investigative value. While this is frequently correct, deliberately pivoting from **highly correlating data points** can itself be a productive analytical strategy—particularly in mature systems where large volumes of data points already exist.
+
+Instead of starting from an event and evaluating its indicators, this approach starts from the **correlation space itself**.
+
+##### High-Cardinality Pivoting to Identify Noise
+
+Data points that correlate with a very large number of unrelated elements often represent:
+
+- Generic infrastructure (shared hosting, CDNs, cloud services)
+- Default framework artifacts
+- Widely reused resources
+- Measurement or collection artifacts
+
+Pivoting from these high-cardinality values allows analysts to **characterize noise explicitly**, rather than encountering it repeatedly during investigations. Once identified, such data points can be:
+
+- Suppressed or deprioritized in automatic correlation
+- Added to warning or exclusion mechanisms (e.g., warning lists)
+- Flagged as contextual-only data points rather than investigative leads
+
+![A screenshot from the MISP correlation view showing the highest-correlating data points, providing insight into globally common values and potential sources of analytical noise.](./img/top-correlation.png)
+
+In platforms like MISP, this logic directly supports mechanisms such as **warning lists**[^warning-list], where globally correlating or misleading values are identified and excluded to reduce analytical noise. Importantly, this noise characterization is not static: it evolves as datasets grow and collection strategies change.
+
+##### Creating Analyst Warnings and Guardrails
+
+High-cardinality correlations are also valuable for building **analyst guardrails**.
+
+By explicitly identifying data points that correlate “too well,” systems can warn analysts when a pivot is likely to explode into unmanageable or irrelevant results. This does not prevent pivoting, but it reframes expectations and reduces cognitive overload.
+
+Such warnings help answer questions like:
+
+- “Is this correlation interesting, or just ubiquitous?”
+- “Is this a pivot worth following, or one to constrain immediately?”
+
+This turns noise into a **known and managed property** of the system rather than an unexpected failure mode.
+
+##### Pivoting from Outliers Instead of Averages
+
+The inverse strategy—pivoting from **outliers**—is equally powerful.
+
+Once high-cardinality values are understood and filtered, the remaining low-frequency or unusual data points often represent:
+
+- Misconfigurations
+- Operational mistakes
+- Rare tooling or custom development
+- Transitional or staging infrastructure
+
+Pivoting from outliers helps surface **uncommon data points** that may not appear significant in isolation but become highly informative when correlated across a large dataset.
+
+##### A Dataset-First Analytical Strategy
+
+This approach is particularly effective in systems where:
+
+- Large volumes of data points are already ingested
+- Correlation is computed globally, not event-by-event
+- Analysts can explore relationships independently of the original events
+
+Rather than asking *“What does this event tell me?”*, the analyst asks:
+*“What does the structure of my data tell me about what is common, rare, or misleading?”*
+
+In this sense, pivoting on correlation cardinality—both high and low—is not just a filtering mechanism. It is a discovery strategy that helps identify noise to suppress, signals to protect, and uncommon data points worth elevating.
 
 ### IP Address to Hostname Correlation
 
@@ -1063,6 +1131,7 @@ Finally, I would like to thank the broader Cyber Threat Intelligence community�
 
 You should have received a copy of the license along with this work. If not, see [https://creativecommons.org/licenses/by-sa/4.0/](https://creativecommons.org/licenses/by-sa/4.0/).
 
+[^warning-list]: [MISP Warning Lists](https://github.com/MISP/misp-warninglists) are used to inform MISP users—and tools relying on the same standards—about data points that may generate false positives or require additional contextual awareness during analysis. 
 [^misp-standard]: MISP published standards are described [https://www.misp-standard.org/standards/](https://www.misp-standard.org/standards/).
 [^sdhash]: [https://github.com/sdhash/sdhash](https://github.com/sdhash/sdhash) [Evaluating Similariy Digests: A Study of TLSH, ssdeep, and sdhash Against Common File Modifications](https://dzone.com/articles/similarity-digests-tlsh-ssdeep-sdhash-benchmark) shows the diversity of similary digests/fuzzing hashing and the difficulty to find the perfect one even for a single task such as classifying malware binaries.
 [^collision-md5]: [Fast Collision Attack on MD5](https://eprint.iacr.org/2006/104) presents an improved attack algorithm to find two-block collisions of the hash function MD5.
