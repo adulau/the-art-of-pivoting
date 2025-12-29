@@ -1176,7 +1176,7 @@ Publishing pivoting techniques serves several purposes:
 
 Rather than empowering attackers, open discussion of analytical techniques strengthens the community’s ability to detect, understand, and respond to threats.
 
-In this context, the goal of this book is not to reveal hidden practices from attackers, but to formalize practices that already exist—making them visible, discussable, and improvable by the wider defensive community.
+In this context, the goal of this book is not to reveal hidden practices of attackers, but to formalize practices that already exist—making them visible, discussable, and improvable by the wider defensive community.
 
 ### Cover Image
 
