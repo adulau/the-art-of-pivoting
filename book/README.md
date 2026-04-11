@@ -265,6 +265,108 @@ DNS is a good example of how all three can apply.
 
 This time-based perspective highlights that pivoting is not limited to a single snapshot. Infrastructure evolves, and useful intelligence emerges when current, historical, and potential future states are analysed together.
 
+### Divergence in Pivoting: Recognizing When the Graph Stops Being Useful
+
+Pivoting is a powerful investigative method because it allows analysts to move from one data point to another and progressively uncover hidden relationships. However, pivoting is not an unbounded good. Each additional step increases the size of the explored graph, and beyond a certain point, the new data points may contribute more noise than insight. Knowing **when a pivot remains valuable** and **when it begins to diverge into low-value territory** is therefore an essential analytical skill.
+
+#### Divergence as a Property of the Pivoting Process
+
+A pivot rarely fails because it is technically incorrect. More often, it fails because it becomes **too broad, too generic, or too weakly selective** to remain useful for investigation. In such cases, the issue is not the validity of the correlation itself, but its diminishing **investigative value**.
+
+This is the essence of **divergence in pivoting**: a point at which each additional pivot produces an expanding set of related data points, but with decreasing coherence, relevance, or specificity.
+
+In practice, divergence often appears when an analyst moves from a relatively specific data point to a much more generic one.
+
+#### A Simple Example: IP Address to Passive DNS
+
+A common example is pivoting from a suspicious domain to its resolved IP address, and then pivoting again through passive DNS to all hostnames historically associated with that IP.
+
+The first pivot may be valuable:
+
+- `domain -> IP address`
+
+It reveals where the domain was hosted and may provide immediate infrastructure context.
+
+The second pivot may or may not remain useful:
+
+- `IP address -> passive DNS -> hostnames`
+
+If the IP address is dedicated or lightly reused, the pivot can expose a meaningful set of related domains. But if the IP belongs to shared hosting, a CDN edge, a sinkhole, or a multi-homed environment, the result may be thousands of unrelated hostnames. At that point, the pivot is still technically correct, but it has diverged into a space dominated by **shared infrastructure noise** rather than actor-controlled relationships.
+
+#### A Counter-Example: Domain, IP, WHOIS, Related Domains
+
+A more selective chain may remain useful for longer:
+
+- `domain -> IP address -> WHOIS record -> other domains with similar WHOIS`
+
+This chain can make sense when the WHOIS information acts as a relatively unique or semi-unique selector: a rare registrant email address, a distinctive organization name, a reused phone number, or another registration artifact that is not widely shared.
+
+In this case, the intermediate pivot is more selective than the IP address itself. Even if the IP is noisy, the WHOIS pivot may reintroduce specificity and guide the investigation back toward a coherent infrastructure cluster.
+
+This illustrates an important point:
+
+> The value of a pivot chain depends less on the number of steps than on the **selectivity of the intermediate data points**.
+
+A long chain can remain useful if each step preserves analytical coherence. A short chain can become useless if it immediately expands into generic infrastructure.
+
+#### Selectivity, Cardinality, and Investigative Value
+
+The earlier discussion on **correlation cardinality** provides a useful foundation for understanding divergence.
+
+- **Low-cardinality data points** often preserve focus and support narrow, meaningful pivots.
+- **High-cardinality data points** often expand rapidly into generic or unrelated datasets.
+
+This does not mean that high-cardinality pivots should always be avoided. They may still be useful for:
+
+- characterizing the environment,
+- identifying shared services,
+- detecting common infrastructure patterns,
+- or discovering values that should be excluded or deprioritized.
+
+However, once the purpose of the pivot shifts from **discovering related infrastructure** to **mapping common noise**, the analyst should recognize that the investigative mode has changed.
+
+#### Divergence Is Not Only About Volume
+
+A pivot does not become weak only because it returns many results. Divergence can also occur when the returned results no longer reinforce the working hypothesis.
+
+Signs of divergence include:
+
+- a sharp increase in the number of correlated data points,
+- a loss of thematic or operational coherence,
+- repeated appearance of generic infrastructure providers,
+- pivots that rely on weak selectors without reinforcement from other data points,
+- additional steps that add volume but not understanding.
+
+In such cases, the graph is growing, but the analysis is not deepening.
+
+#### When to Stop Pivoting
+
+There is no universal threshold at which a pivot must stop. The stopping point depends on the type of data, the objective of the investigation, and the quality of the supporting correlations. Still, some practical questions can help:
+
+- Does this new pivot reduce uncertainty, or merely expand the graph?
+- Are the newly discovered data points coherent with the current hypothesis?
+- Is the intermediate selector specific enough to justify further exploration?
+- Would a different pivot path offer more selectivity or better context?
+
+If the answer increasingly points toward generic infrastructure, repeated noise, or weakly related artifacts, the analyst has likely reached the point where **further pivoting yields diminishing returns**.
+
+At that stage, the correct response is often not to continue expanding, but to:
+
+- stop the current chain,
+- return to an earlier, more selective data point,
+- or shift from exploration to validation.
+
+#### Divergence as an Analytical Boundary
+
+Divergence should not be seen as failure. On the contrary, recognizing it is part of disciplined pivot-based analysis. It marks the boundary between:
+
+- meaningful relationship discovery,
+- and unstructured graph expansion.
+
+A mature analyst does not follow every possible edge in the graph. Instead, they evaluate each new pivot as a trade-off between opportunity and dilution.
+
+In that sense, knowing when to stop is not separate from pivoting; it is part of pivoting itself. The goal is not to traverse the largest possible graph, but to identify the parts of the graph that remain analytically coherent, operationally useful, and sufficiently selective to support further investigation.
+
 ## Rethinking Pivoting: From Strong Indicators to Unintended Traces
 
 Pivoting is often described as an investigative art, but the goal is to shape it into a more reproducible and practical discipline, one that any analyst can apply methodically rather than intuitively. However, the way we think about pivoting is sometimes constrained by rigid models or inherited practices that no longer reflect how modern adversaries operate. Frameworks like the Pyramid of Pain are useful, but they deserve to be re-examined: how hard is it really for threat actors to alter an indicator, and which indicators do they ignore entirely?
