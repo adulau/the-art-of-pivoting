@@ -2,7 +2,7 @@
 title: "The Art of Pivoting"
 description: "The Art of Pivoting: Techniques for Intelligence Analysts to Discover New Relationships"
 author: [Alexandre Dulaunoy]
-date: "2025-12-29"
+date: "2025-04-11"
 keywords: [threat intelligence, cti, techniques, art of pivoting]
 titlepage: true
 logo-width: "80mm"
