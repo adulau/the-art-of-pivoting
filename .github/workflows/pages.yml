@@ -21,6 +21,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Switch Pages source to GitHub Actions (workflow) mode
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh api --method PATCH /repos/${{ github.repository }}/pages \
+            -f build_type=workflow
+
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
